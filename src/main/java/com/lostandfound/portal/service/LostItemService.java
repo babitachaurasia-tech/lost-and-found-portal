@@ -69,6 +69,15 @@ public class LostItemService {
         return items.map(this::mapToResponse);
     }
 
+    public Page<ItemResponse> searchItems(
+        ItemType type, Category category, String keyword, Pageable pageable) {
+
+    Page<LostItem> items = lostItemRepository.searchItems(
+            type, ItemStatus.ACTIVE, category, keyword, pageable);
+
+    return items.map(this::mapToResponse);
+}
+
     public ItemResponse updateStatus(Long itemId, ItemStatus newStatus, User currentUser) {
 
         LostItem item = lostItemRepository.findById(itemId)
