@@ -57,6 +57,17 @@ public class LostItemController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/search")
+public ResponseEntity<Page<ItemResponse>> searchItems(
+        @RequestParam ItemType type,
+        @RequestParam(required = false) Category category,
+        @RequestParam String keyword,
+        @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
+
+    Page<ItemResponse> results = lostItemService.searchItems(type, category, keyword, pageable);
+    return ResponseEntity.ok(results);
+}
+
     @PatchMapping("/{id}/status")
     public ResponseEntity<ItemResponse> updateStatus(
             @PathVariable Long id,
