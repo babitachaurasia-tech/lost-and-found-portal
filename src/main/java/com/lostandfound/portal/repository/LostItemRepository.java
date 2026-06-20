@@ -19,4 +19,22 @@ public interface LostItemRepository extends JpaRepository<LostItem, Long> {
             ItemType type, ItemStatus status, Category category, Pageable pageable);
 
     Page<LostItem> findByReportedBy(User reportedBy, Pageable pageable);
+
+    @Query("""
+    SELECT i FROM LostItem i
+    WHERE i.type = :type
+    AND i.status = :status
+    AND (:category IS NULL OR i.category = :category)
+    AND (
+        LOWER(i.title) LIKE LOWER(CONCAT('%', :keyword, '%'))
+        OR LOWER(i.description) LIKE LOWER(CONCAT('%', :keyword, '%'))
+    )
+""")
+    Page<LostItem> searchItems(
+        @Param("type") ItemType type,
+        @Param("status") ItemStatus status,
+        @Param("category") Category category,
+        @Param("keyword") String keyword,
+        Pageable pageable
+);
 }
