@@ -78,6 +78,11 @@ public ResponseEntity<Page<ItemResponse>> searchItems(
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/{id}")
+public ResponseEntity<ItemResponse> getItem(@PathVariable Long id) {
+    return ResponseEntity.ok(lostItemService.getItemById(id));
+}
+
     @GetMapping("/my-listings")
     public ResponseEntity<Page<ItemResponse>> getMyListings(
             @PageableDefault(size = 10, sort = "createdAt") Pageable pageable) {
