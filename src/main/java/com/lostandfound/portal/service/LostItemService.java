@@ -93,6 +93,12 @@ public class LostItemService {
         return mapToResponse(updated);
     }
 
+    public ItemResponse getItemById(Long id) {
+    LostItem item = lostItemRepository.findById(id)
+            .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + id));
+    return mapToResponse(item);
+}
+
     public Page<ItemResponse> getMyListings(User currentUser, Pageable pageable) {
         return lostItemRepository.findByReportedBy(currentUser, pageable)
                 .map(this::mapToResponse);
